@@ -1,0 +1,60 @@
+body {
+    background: linear-gradient(to bottom right, #ffe6e9, #fbdcdc);
+    font-family: 'Poppins', sans-serif;
+    color: #4a4a4a;
+}
+
+.container {
+    max-width: 700px;
+}
+
+.card {
+    border: none;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #a83e5c;
+}
+
+.result-header {
+    font-weight: bold;
+    color: #8b3a49;
+}
+
+.result-list .list-group-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.1em;
+    border: none;
+    color: #5c2b33;
+}
+
+.result-value {
+    color: #d26979;
+    font-weight: bold;
+    text-align: right;
+}
+
+.form-control[disabled], .form-control[readonly] {
+    background-color: #f8d7da;
+    color: #8b3a49;
+    font-weight: bold;
+}
+
+.btn-primary {
+    background-color: #a83e5c;
+    border-color: #a83e5c;
+}
+
+.btn-primary:hover {
+    background-color: #8b3a49;
+    border-color: #8b3a49;
+}
+
+.list-group-item {
+    background-color: #fdf5f7;
+}

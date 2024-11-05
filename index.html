@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Préstamo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<div class="container mt-5">
+    <div class="card shadow p-4">
+        <h2 class="text-center">Calculadora de Préstamo</h2>
+        <form id="loanForm">
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="capital" class="form-label">Capital a Financiar *</label>
+                    <input type="number" id="capital" class="form-control" placeholder="Monto del préstamo" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="plazo" class="form-label">Plazo de Años</label>
+                    <input type="number" id="plazo" class="form-control" placeholder="1" value="1" min="1">
+                </div>
+                <div class="col-md-6 mt-3">
+                    <label for="periodicidad" class="form-label">Periodicidad</label>
+                    <select id="periodicidad" class="form-select">
+                        <option value="12">Mensual</option>
+                        <option value="6">Bimestral</option>
+                        <option value="4">Trimestral</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mt-3">
+                    <label for="tasaEfectiva" class="form-label">Tasa Efectiva (%)</label>
+                    <input type="number" id="tasaEfectiva" class="form-control" placeholder="17.30" step="0.01" disabled>
+                </div>
+                <div class="col-md-6 mt-3">
+                    <label for="seguroDesgravamen" class="form-label">Seguro Desgravamen ($)</label>
+                    <input type="number" id="seguroDesgravamen" class="form-control" placeholder="17.78" step="0.01" disabled>
+                </div>
+                <div class="col-md-6 mt-3">
+                    <label for="seguroCesantia" class="form-label">Seguro Cesantía ($)</label>
+                    <input type="number" id="seguroCesantia" class="form-control" placeholder="73.49" step="0.01" disabled>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary mt-4" onclick="calcularPrestamo()">Calcular</button>
+        </form>
+        
+        <div class="mt-5">
+            <h4 class="result-header">Resultados</h4>
+            <ul class="list-group result-list">
+                <li class="list-group-item">Monto Financiado: <span class="result-value" id="montoFinanciado"></span></li>
+                <li class="list-group-item">Monto Líquido: <span class="result-value" id="montoLiquido"></span></li>
+                <li class="list-group-item">Dividendo Mensual: <span class="result-value" id="dividendoMensual"></span></li>
+                <li class="list-group-item">Valor Total: <span class="result-value" id="valorTotal"></span></li>
+                <li class="list-group-item">Tasa Anual Costo Crédito: <span class="result-value" id="tasaCostoCredito"></span></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+function calcularPrestamo() {
+    const capital = parseFloat(document.getElementById('capital').value);
+    const plazo = parseFloat(document.getElementById('plazo').value);
+    const periodicidad = parseInt(document.getElementById('periodicidad').value);
+    const tasaEfectiva = parseFloat(document.getElementById('tasaEfectiva').placeholder) / 100;
+    const seguroDesgravamen = parseFloat(document.getElementById('seguroDesgravamen').placeholder) || 0;
+    const seguroCesantia = parseFloat(document.getElementById('seguroCesantia').placeholder) || 0;
+
+    // Cálculo de monto financiado y monto líquido
+    const montoFinanciado = capital + seguroDesgravamen + seguroCesantia;
+    const montoLiquido = capital;
+
+    // Cálculo del dividendo mensual (tabla francesa)
+    const tasaPeriodica = tasaEfectiva / periodicidad;
+    const numeroCuotas = plazo * periodicidad;
+    const dividendoMensual = (montoFinanciado * tasaPeriodica) / (1 - Math.pow(1 + tasaPeriodica, -numeroCuotas));
+
+    // Cálculo del valor total y tasa anual de costo
+    const valorTotal = dividendoMensual * numeroCuotas;
+    const tasaCostoCredito = (valorTotal / montoLiquido - 1) * 100;
+
+    // Mostrar resultados en HTML
+    document.getElementById('montoFinanciado').innerText = `$${montoFinanciado.toFixed(2)}`;
+    document.getElementById('montoLiquido').innerText = `$${montoLiquido.toFixed(2)}`;
+    document.getElementById('dividendoMensual').innerText = `$${dividendoMensual.toFixed(2)}`;
+    document.getElementById('valorTotal').innerText = `$${valorTotal.toFixed(2)}`;
+    document.getElementById('tasaCostoCredito').innerText = `${tasaCostoCredito.toFixed(2)}%`;
+}
+</script>
+
+</body>
+</html>
